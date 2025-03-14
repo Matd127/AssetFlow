@@ -1,0 +1,28 @@
+0 silly argv {
+0 silly argv   _: [ 'exec' ],
+0 silly argv   args: [ 'start' ],
+0 silly argv   lernaVersion: '8.2.1',
+0 silly argv   '$0': '..\\..\\..\\AppData\\Roaming\\npm\\node_modules\\lerna\\dist\\cli.js',
+0 silly argv   cmd: 'npm'
+0 silly argv }
+1 notice cli v8.2.1
+2 verbose packageConfigs Explicit "packages" configuration found in lerna.json. Resolving packages using the configured glob(s): ["packages/*"]
+3 verbose rootPath C:\Users\Admin\Desktop\Projekty\AssetFlow
+4 error - packages/client/package.json: Error: InvalidSymbol in C:\Users\Admin\Desktop\Projekty\AssetFlow\packages\client\package.json at 8:21
+4 error   [0m [90m  6 | [39m  "scripts": {[0m
+4 error   [0m [90m  7 | [39m    "dev": "vite",[0m
+4 error   [0m[31m[1m>[22m[39m[90m  8 | [39m    "start": "vite",'[0m
+4 error   [0m [90m    | [39m                    [31m[1m^[22m[39m[0m
+4 error   [0m [90m  9 | [39m    '[0m
+4 error   [0m [90m 10 | [39m    "build": "vite build",[0m
+4 error   [0m [90m 11 | [39m    "lint": "eslint .",[0m
+4 error
+4 error       at parseJson (C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\utils\json.js:29:15)
+4 error       at readJsonFile (C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\utils\fileutils.js:32:37)
+4 error       at createNodeFromPackageJson (C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\plugins\package-json\create-nodes.js:83:47)
+4 error       at C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\plugins\package-json\create-nodes.js:40:20
+4 error       at C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\project-graph\plugins\utils.js:10:33
+4 error       at Array.map (<anonymous>)
+4 error       at createNodesFromFiles (C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\project-graph\plugins\utils.js:8:35)
+4 error       at exports.createNodesV2 (C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\plugins\package-json\create-nodes.js:33:51)
+4 error       at LoadedNxPlugin.createNodes (C:\Users\Admin\Desktop\Projekty\AssetFlow\node_modules\nx\src\project-graph\plugins\loaded-nx-plugin.js:26:65)
