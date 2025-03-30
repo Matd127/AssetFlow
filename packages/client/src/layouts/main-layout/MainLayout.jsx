@@ -1,9 +1,9 @@
-import Header from 'layouts/Header/Header.jsx';
+import Header from 'layouts/header/Header.jsx';
 import Box from '@mui/material/Box';
 import { Outlet } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { THEME_STYLES } from './constants.js';
-import Footer from 'layouts/Footer/Footer.jsx';
+import Footer from 'layouts/footer/Footer.jsx';
 
 const theme = createTheme(THEME_STYLES);
 

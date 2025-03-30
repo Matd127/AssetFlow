@@ -1,0 +1,4 @@
+
+> assetflow@1.0.0 start
+> lerna exec -- npm start
+
