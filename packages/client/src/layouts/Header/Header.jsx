@@ -14,12 +14,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { LINKS } from './constants.js';
+import { primaryButtonStyles } from 'styles/buttonStyles.js';
 
-export default function Header() {
+export default function Header({ theme }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleDrawerToggle = () => {
@@ -34,19 +33,26 @@ export default function Header() {
     textTransform: 'none',
   });
 
-  const signInButtonStyles = { 
-    borderRadius: 5, 
-    fontWeight: 'bold', 
-    p: '0.5rem 2rem', 
-    textTransform: 'none',
-    whiteSpace: 'nowrap',
-  };
-
   const renderLinks = () =>
     LINKS.map(link => (
       <Button key={link.id} sx={linkStyles(link)}>
         {link.label}
       </Button>
+    ));
+
+  const renderMobileLinks = () =>
+    LINKS.map(link => (
+      <ListItem key={link.id} disablePadding>
+        <ListItemButton sx={{ textAlign: 'center' }}>
+          <ListItemText
+            primary={link.label}
+            primaryTypographyProps={{
+              fontWeight: link.label === 'Home' ? 700 : 500,
+              color: link.label === 'Home' ? 'primary' : 'inherit',
+            }}
+          />
+        </ListItemButton>
+      </ListItem>
     ));
 
   const drawer = (
@@ -60,27 +66,10 @@ export default function Header() {
         </IconButton>
       </Box>
       <List sx={{ pt: 2 }}>
-        {LINKS.map((link) => (
-          <ListItem key={link.id} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText 
-                primary={link.label} 
-                primaryTypographyProps={{ 
-                  fontWeight: link.label === 'Home' ? 700 : 500,
-                  color: link.label === 'Home' ? 'primary' : 'inherit',
-                }} 
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {renderMobileLinks()}
         <ListItem disablePadding sx={{ mt: 2 }}>
           <ListItemButton sx={{ textAlign: 'center' }}>
-            <Button 
-              color="primary" 
-              variant="contained" 
-              fullWidth
-              sx={signInButtonStyles}
-            >
+            <Button color="primary" variant="contained" fullWidth sx={primaryButtonStyles}>
               Sign in
             </Button>
           </ListItemButton>
@@ -97,14 +86,8 @@ export default function Header() {
             <Typography color="primary" variant="h5" component="div" sx={{ fontWeight: 'bold', cursor: 'pointer' }}>
               AssetFlow
             </Typography>
-            
             {isMobile ? (
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="end"
-                onClick={handleDrawerToggle}
-              >
+              <IconButton color="inherit" aria-label="open drawer" edge="end" onClick={handleDrawerToggle}>
                 <MenuIcon />
               </IconButton>
             ) : (
@@ -112,7 +95,7 @@ export default function Header() {
                 <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
                   <Box sx={{ bgcolor: '#EBEEF3', borderRadius: 10 }}>{renderLinks()}</Box>
                 </Box>
-                <Button color="primary" variant="contained" sx={signInButtonStyles}>
+                <Button color="primary" variant="contained" sx={primaryButtonStyles}>
                   Sign in
                 </Button>
               </>
@@ -120,20 +103,19 @@ export default function Header() {
           </Toolbar>
         </Container>
       </AppBar>
-      
+
       <Drawer
         variant="temporary"
         anchor="right"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile
+          keepMounted: true,
         }}
         sx={{
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 280 },
-        }}
-      >
+        }}>
         {drawer}
       </Drawer>
     </Box>
