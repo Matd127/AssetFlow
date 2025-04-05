@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import CapabilityCard from '../CapabilityCard.jsx';
 import { describe, it, expect } from 'vitest';
+import CapabilityCard from '../CapabilityCard.jsx';
 
 const mockCapability = {
   title: 'Test Title',

@@ -1,29 +1,16 @@
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { LINKS } from './constants.js';
 import { primaryButtonStyles } from 'styles/buttonStyles.js';
+import MobileMenu from './MobileMenu.jsx';
 
 export default function Header({ theme }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const linkStyles = link => ({
     borderRadius: 5,
@@ -40,44 +27,6 @@ export default function Header({ theme }) {
       </Button>
     ));
 
-  const renderMobileLinks = () =>
-    LINKS.map(link => (
-      <ListItem key={link.id} disablePadding>
-        <ListItemButton sx={{ textAlign: 'center' }}>
-          <ListItemText
-            primary={link.label}
-            primaryTypographyProps={{
-              fontWeight: link.label === 'Home' ? 700 : 500,
-              color: link.label === 'Home' ? 'primary' : 'inherit',
-            }}
-          />
-        </ListItemButton>
-      </ListItem>
-    ));
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-        <Typography color="primary" variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
-          AssetFlow
-        </Typography>
-        <IconButton color="inherit" onClick={handleDrawerToggle} edge="end">
-          <CloseIcon />
-        </IconButton>
-      </Box>
-      <List sx={{ pt: 2 }}>
-        {renderMobileLinks()}
-        <ListItem disablePadding sx={{ mt: 2 }}>
-          <ListItemButton sx={{ textAlign: 'center' }}>
-            <Button color="primary" variant="contained" fullWidth sx={primaryButtonStyles}>
-              Sign in
-            </Button>
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Box>
-  );
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="secondary" sx={{ boxShadow: 'none' }}>
@@ -87,9 +36,7 @@ export default function Header({ theme }) {
               AssetFlow
             </Typography>
             {isMobile ? (
-              <IconButton color="inherit" aria-label="open drawer" edge="end" onClick={handleDrawerToggle}>
-                <MenuIcon />
-              </IconButton>
+              <MobileMenu links={LINKS} primaryButtonStyles={primaryButtonStyles} />
             ) : (
               <>
                 <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
@@ -103,21 +50,6 @@ export default function Header({ theme }) {
           </Toolbar>
         </Container>
       </AppBar>
-
-      <Drawer
-        variant="temporary"
-        anchor="right"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true,
-        }}
-        sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 280 },
-        }}>
-        {drawer}
-      </Drawer>
     </Box>
   );
 }

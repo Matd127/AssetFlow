@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { CAPABILITIES } from './constants.js';
 import { Grid } from '@mui/material';
-import CapabilityCard from 'features/home/components/capabilities/capability-card/CapabilityCard.jsx';
+import CapabilityCard from './CapabilityCard.jsx';
 
 export default function Capabilities() {
   const renderCapabilities = () =>
@@ -20,18 +20,17 @@ export default function Capabilities() {
           <Typography variant="h3" sx={{ fontWeight: 500, letterSpacing: -0.25, fontSize: 45 }}>
             Why Choose AssetFlow?
           </Typography>
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              maxWidth: 700, 
-              fontWeight: 400, 
-              letterSpacing: -0.25, 
-              color: '#42474e', 
-              pt: 2, 
-              fontSize: 20, 
-              margin: '0 auto' 
-            }}
-          >
+          <Typography
+            variant="h5"
+            sx={{
+              maxWidth: 700,
+              fontWeight: 400,
+              letterSpacing: -0.25,
+              color: '#42474e',
+              pt: 2,
+              fontSize: 20,
+              margin: '0 auto',
+            }}>
             Powerful features to streamline your IT asset management
           </Typography>
         </Box>
