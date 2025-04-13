@@ -13,7 +13,6 @@ import Button from '@mui/material/Button';
 
 export default function MobileMenu({ links, primaryButtonStyles }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-
   const handleDrawerToggle = () => setMobileOpen(prev => !prev);
   const handleDrawerClose = () => setMobileOpen(false);
 
