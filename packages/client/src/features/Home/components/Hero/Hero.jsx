@@ -31,7 +31,7 @@ export default function Hero() {
           </Typography>
         </Box>
         <Typography variant="h5" sx={{ maxWidth: 800, fontWeight: 400, letterSpacing: -0.25, color: '#42474e', pt: 5, fontSize: 23, margin: '0 auto' }}>
-          Design marketing pages and powerful admin dashboards with ease using our UI Kit, built following Material 3 guidelines.
+          Gain full visibility and control over your IT assets, licenses, and procurement - all in one modern and intuitive platform.
         </Typography>
         <Button color="primary" variant="contained" sx={ctaStyles}>
           Try by yourself

@@ -5,6 +5,7 @@ import CapabilityCard from '../CapabilityCard.jsx';
 const mockCapability = {
   title: 'Test Title',
   text: 'Test Text',
+  icon: vi.fn().mockImplementation(() => <></>),
 };
 
 describe('CapabilityCard', () => {

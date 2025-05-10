@@ -66,6 +66,8 @@ export default function Login() {
       <Box>
         <Button
           type="submit"
+          component={RouterLink}
+          to="/dashboard"
           fullWidth
           variant="contained"
           sx={{

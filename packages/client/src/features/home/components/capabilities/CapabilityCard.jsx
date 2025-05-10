@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Icon from '@mui/material/Icon';
 import Paper from '@mui/material/Paper';
 
 export default function CapabilityCard({ capability }) {
@@ -8,6 +7,7 @@ export default function CapabilityCard({ capability }) {
     backgroundColor: '#F1F4F9',
     borderRadius: 3,
     p: 4,
+    width: '100%',
     height: '100%',
     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     '&:hover': {
@@ -15,6 +15,8 @@ export default function CapabilityCard({ capability }) {
       boxShadow: '0px 12px 20px rgba(0, 0, 0, 0.1)',
     },
   };
+
+  const CapabilityIcon = capability.icon;
 
   return (
     <Paper elevation={0} sx={cardStyles}>
@@ -30,9 +32,7 @@ export default function CapabilityCard({ capability }) {
           mb: 3,
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.05)',
         }}>
-        <Icon color="primary" sx={{ fontSize: 28 }}>
-          {capability.icon}
-        </Icon>
+        <CapabilityIcon sx={{ fontSize: 28 }} color="primary" />
       </Box>
       <Typography component="h3" variant="h5" sx={{ mb: 2, fontWeight: 600, fontSize: '1.25rem' }}>
         {capability.title}
