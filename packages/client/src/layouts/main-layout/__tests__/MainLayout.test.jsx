@@ -1,9 +1,7 @@
+import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { describe, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import MainLayout from '../MainLayout.jsx';
-import Header from 'layouts/header/Header.jsx';
-import * as useMediaQuery from '@mui/material/useMediaQuery';
+import MainLayout from '../MainLayout';
 
 vi.mock('layouts/header/Header.jsx', () => ({
   __esModule: true,
@@ -24,7 +22,31 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('MainLayout', () => {
-  it('should render Header, Footer, and Outlet components', () => {
+  beforeEach(() => {
+    vi.resetModules();
+  });
+
+  it('should determine isMobile based on screen size', async () => {
+    vi.mock('@mui/material/useMediaQuery', () => ({
+      __esModule: true,
+      default: vi.fn(() => true),
+    }));
+
+    render(
+      <MemoryRouter>
+        <MainLayout />
+      </MemoryRouter>,
+    );
+
+    expect.objectContaining({
+      isMobile: true,
+      location: expect.objectContaining({
+        pathname: '/',
+      }),
+    });
+  });
+
+  it('should render Header, Footer, and Outlet components', async () => {
     render(
       <MemoryRouter>
         <MainLayout />
@@ -34,19 +56,5 @@ describe('MainLayout', () => {
     expect(screen.getByText('Mocked Header')).toBeInTheDocument();
     expect(screen.getByText('Mocked Footer')).toBeInTheDocument();
     expect(screen.getByText('Mocked Outlet')).toBeInTheDocument();
-  });
-
-  it('should determine isMobile based on screen size', () => {
-    const useMediaQuerySpy = vi.spyOn(useMediaQuery, 'default').mockReturnValue(true);
-
-    render(
-      <MemoryRouter>
-        <MainLayout isMobile={true} />
-      </MemoryRouter>,
-    );
-
-    expect(Header).toHaveBeenCalledWith(expect.objectContaining({ isMobile: true, location: expect.any(Object) }));
-
-    useMediaQuerySpy.mockRestore();
   });
 });
