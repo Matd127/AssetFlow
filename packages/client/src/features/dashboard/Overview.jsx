@@ -1,225 +1,122 @@
 import { useState } from 'react';
-import { 
-  Box, 
-  Grid, 
-  Paper,
-  Typography, 
-  ButtonGroup, 
-  Button, 
-  LinearProgress
-} from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import DevicesIcon from '@mui/icons-material/Devices';
+import KeyIcon from '@mui/icons-material/Key';
+import PeopleIcon from '@mui/icons-material/People';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
+// Import dashboard components
+import KpiCard from './components/KpiCard';
+import RecentActivityTable from './components/RecentActivityTable';
+import AssetStatusDonut from './components/AssetStatusDonut';
+import LicensesByCategoryBar from './components/LicensesByCategoryBar';
+import TicketsOverTimeLine from './components/TicketsOverTimeLine';
+import TopUsersWidget from './components/TopUsersWidget';
+import QuickActionsBar from './components/QuickActionsBar';
 
-
-const StatCard = ({ title, value, target, trend }) => (
-  <Paper
-    elevation={1}
-    sx={{
-      p: 3,
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      bgcolor: 'white',
-      borderRadius: '8px'
-    }}
-  >
-    <Typography variant="body2" color="text.secondary" gutterBottom>
-      {title}
-    </Typography>
-
-    <Typography variant="h4" sx={{ mb: 1, color: '#006397' }}>
-      {value}
-    </Typography>
-
-    <Box sx={{ display: 'flex', alignItems: 'center', mt: 'auto' }}>
-      <Typography
-        variant="body2"
-        color={trend.startsWith('+') ? '#4CAF50' : '#F44336'}
-        sx={{ display: 'flex', alignItems: 'center', mr: 1 }}
-      >
-        {trend}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        vs target {target}
-      </Typography>
-    </Box>
-  </Paper>
-);
+// Import modals for quick actions
+import AssetModal from './components/AssetModal';
+import LicenseModal from './components/LicenseModal';
+import UserModal from './components/UserModal';
+import TicketModal from './components/TicketModal';
 
 export default function Overview() {
-  const [timeRange, setTimeRange] = useState('MONTHLY');
+  const [openAssetModal, setOpenAssetModal] = useState(false);
+  const [openLicenseModal, setOpenLicenseModal] = useState(false);
+  const [openUserModal, setOpenUserModal] = useState(false);
+  const [openTicketModal, setOpenTicketModal] = useState(false);
+
+  const handleQuickAction = action => {
+    switch (action) {
+      case 'asset':
+        setOpenAssetModal(true);
+        break;
+      case 'license':
+        setOpenLicenseModal(true);
+        break;
+      case 'user':
+        setOpenUserModal(true);
+        break;
+      case 'ticket':
+        setOpenTicketModal(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleModalSubmit = (data, type) => {
+    // TODO: API integration - send data to backend
+    console.log(`${type} submitted:`, data);
+    // Close the appropriate modal
+    switch (type) {
+      case 'asset':
+        setOpenAssetModal(false);
+        break;
+      case 'license':
+        setOpenLicenseModal(false);
+        break;
+      case 'user':
+        setOpenUserModal(false);
+        break;
+      case 'ticket':
+        setOpenTicketModal(false);
+        break;
+    }
+  };
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Overview
+    <Box sx={{ p: { xs: 2, md: 4 }, bgcolor: '#f9fafb', minHeight: '100vh' }}>
+      <Typography variant="h4" fontWeight={700} mb={4} color="#333">
+        Dashboard Overview
       </Typography>
-      <Grid container spacing={3} sx={{ mb: 8 }}>
-        <Grid item xs={12} md={4}>
-          <StatCard
-            title="Total Assets"
-            value="2,680"
-            trend="+5.5%"
-            target="3,000"
-          />
+
+      {/* KPI Cards Row */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: 3,
+          mb: 6,
+        }}>
+        <KpiCard icon={<DevicesIcon />} label="Total Assets" value="2,680" secondary="Devices managed" trend="+5.2%" trendLabel="vs last month" color="#006397" />
+        <KpiCard icon={<KeyIcon />} label="Active Licenses" value="1,847" secondary="of 2,100 total" trend="+3.1%" trendLabel="vs last month" color="#4CAF50" />
+        <KpiCard icon={<PeopleIcon />} label="Total Users" value="1,245" secondary="Active employees" trend="+2.8%" trendLabel="vs last month" color="#2196F3" />
+        <KpiCard icon={<SupportAgentIcon />} label="Open Tickets" value="47" secondary="Pending resolution" trend="-12.5%" trendLabel="vs last month" color="#FF9800" />
+      </Box>
+
+      {/* Two-Column Section */}
+      <Grid container spacing={4} sx={{ mb: 6 }}>
+        <Grid item xs={12} lg={8}>
+          <RecentActivityTable />
         </Grid>
-        <Grid item xs={12} md={4}>
-          <StatCard
-            title="Active Licenses"
-            value="4,593"
-            trend="+3.8%"
-            target="4,800"
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <StatCard
-            title="Support Tickets"
-            value="23,876"
-            trend="-4.9%"
-            target="20,000"
-          />
+        <Grid item xs={12} lg={4}>
+          <AssetStatusDonut />
         </Grid>
       </Grid>
 
-      <Paper elevation={1} sx={{ p: 3, bgcolor: 'white', borderRadius: '8px' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-          <Typography variant="h6">Asset & License Growth</Typography>
-          <ButtonGroup size="small">
-            <Button
-              variant={timeRange === 'DAILY' ? 'contained' : 'outlined'}
-              onClick={() => setTimeRange('DAILY')}
-              sx={{
-                bgcolor: timeRange === 'DAILY' ? '#006397' : 'transparent',
-                '&:hover': { bgcolor: timeRange === 'DAILY' ? '#005380' : 'rgba(0, 99, 151, 0.08)' },
-              }}
-            >
-              DAILY
-            </Button>
-            <Button
-              variant={timeRange === 'MONTHLY' ? 'contained' : 'outlined'}
-              onClick={() => setTimeRange('MONTHLY')}
-              sx={{
-                bgcolor: timeRange === 'MONTHLY' ? '#006397' : 'transparent',
-                '&:hover': { bgcolor: timeRange === 'MONTHLY' ? '#005380' : 'rgba(0, 99, 151, 0.08)' },
-              }}
-            >
-              MONTHLY
-            </Button>
-            <Button
-              variant={timeRange === 'YEARLY' ? 'contained' : 'outlined'}
-              onClick={() => setTimeRange('YEARLY')}
-              sx={{
-                bgcolor: timeRange === 'YEARLY' ? '#006397' : 'transparent',
-                '&:hover': { bgcolor: timeRange === 'YEARLY' ? '#005380' : 'rgba(0, 99, 151, 0.08)' },
-              }}
-            >
-              YEARLY
-            </Button>
-          </ButtonGroup>
-        </Box>
-
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={6}>
-            <Box>
-              <Typography variant="subtitle1" gutterBottom>
-                Laptops
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                <Box sx={{ flexGrow: 1, mr: 2 }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={80}
-                    sx={{
-                      height: 8,
-                      borderRadius: 4,
-                      bgcolor: '#E0E0E0',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#006397',
-                      },
-                    }}
-                  />
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  16,890
-                </Typography>
-              </Box>
-
-              <Typography variant="subtitle1" gutterBottom>
-                Monitors
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                <Box sx={{ flexGrow: 1, mr: 2 }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={65}
-                    sx={{
-                      height: 8,
-                      borderRadius: 4,
-                      bgcolor: '#E0E0E0',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#006397',
-                      },
-                    }}
-                  />
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  4,509
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Box>
-              <Typography variant="subtitle1" gutterBottom>
-                Phones
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                <Box sx={{ flexGrow: 1, mr: 2 }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={45}
-                    sx={{
-                      height: 8,
-                      borderRadius: 4,
-                      bgcolor: '#E0E0E0',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#006397',
-                      },
-                    }}
-                  />
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  850
-                </Typography>
-              </Box>
-
-              <Typography variant="subtitle1" gutterBottom>
-                Printers
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ flexGrow: 1, mr: 2 }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={25}
-                    sx={{
-                      height: 8,
-                      borderRadius: 4,
-                      bgcolor: '#E0E0E0',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#006397',
-                      },
-                    }}
-                  />
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  140
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
+      {/* Bottom Row - Three Widgets */}
+      <Grid container spacing={4} sx={{ mb: 6 }}>
+        <Grid item xs={12} lg={4}>
+          <LicensesByCategoryBar />
         </Grid>
-      </Paper>
+        <Grid item xs={12} lg={4}>
+          <TicketsOverTimeLine />
+        </Grid>
+        <Grid item xs={12} lg={4}>
+          <TopUsersWidget />
+        </Grid>
+      </Grid>
+
+      <Box sx={{ mt: 4 }}>
+        <QuickActionsBar onAction={handleQuickAction} />
+      </Box>
+
+      {/* Modals for Quick Actions */}
+      <AssetModal open={openAssetModal} onClose={() => setOpenAssetModal(false)} onSubmit={data => handleModalSubmit(data, 'asset')} />
+      <LicenseModal open={openLicenseModal} onClose={() => setOpenLicenseModal(false)} onSubmit={data => handleModalSubmit(data, 'license')} />
+      <UserModal open={openUserModal} onClose={() => setOpenUserModal(false)} onSubmit={data => handleModalSubmit(data, 'user')} />
+      <TicketModal open={openTicketModal} onClose={() => setOpenTicketModal(false)} onSubmit={data => handleModalSubmit(data, 'ticket')} />
     </Box>
   );
 }

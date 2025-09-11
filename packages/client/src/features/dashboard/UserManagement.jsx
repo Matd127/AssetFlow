@@ -1,10 +1,18 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserModal from './components/UserModal';
+import ConfirmActionModal from './components/ConfirmActionModal';
 import { primaryButtonStyles } from 'shared/styles/buttonStyles';
-import { Box, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Button, Chip, Avatar, IconButton, Menu, MenuItem, InputAdornment } from '@mui/material';
+import { Box, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Button, Chip, Avatar, IconButton, Menu, MenuItem, InputAdornment, TablePagination } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
+
+const statusColors = {
+  Active: 'success',
+  Inactive: 'default',
+};
 
 // Mock data
 const mockUsers = [
@@ -41,10 +49,38 @@ const mockUsers = [
 ];
 
 export default function UserManagement() {
+  const navigate = useNavigate();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleChangePage = (event, newPage) => setPage(newPage);
+  const handleChangeRowsPerPage = event => { setRowsPerPage(parseInt(event.target.value, 10)); setPage(0); };
+
+  const [openUserModal, setOpenUserModal] = useState(false);
+  const [editUser, setEditUser] = useState(null);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const handleAddUser = (data) => {
+    // TODO: Add user to state or send to backend
+    setOpenUserModal(false);
+  };
+  const handleUpdateUser = (data) => {
+    // TODO: Update user in state or send to backend
+    setOpenUserModal(false);
+    setEditUser(null);
+  };
+  const handleDeactivateUser = () => {
+    // TODO: Deactivate user logic
+    setOpenConfirmModal(false);
+    setConfirmTarget(null);
+  };
+
+
   const [searchQuery, setSearchQuery] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleMenuOpen = event => {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const handleMenuOpen = (event, user) => {
     setAnchorEl(event.currentTarget);
+    setSelectedUser(user);
   };
 
   const handleMenuClose = () => {
@@ -58,8 +94,8 @@ export default function UserManagement() {
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        User Management
+      <Typography variant="h4" fontWeight={700} mb={3}>
+        Dashboard / User Management
       </Typography>
 
       <Paper sx={{ p: 3, borderRadius: 1 }}>
@@ -78,7 +114,7 @@ export default function UserManagement() {
               ),
             }}
           />
-          <Button variant="contained" disableElevation sx={{ ...primaryButtonStyles, bgcolor: '#006397', '&:hover': { bgcolor: '#005380' } }}>
+          <Button variant="contained" disableElevation sx={{ ...primaryButtonStyles, bgcolor: '#006397', '&:hover': { bgcolor: '#005380' } }} onClick={() => { setEditUser(null); setOpenUserModal(true); }}>
             Add New User
           </Button>
         </Box>
@@ -97,7 +133,7 @@ export default function UserManagement() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers.map(user => (
+              {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(user => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -113,16 +149,7 @@ export default function UserManagement() {
                   <TableCell>{user.department}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
-                    <Chip
-                      label={user.status}
-                      size="small"
-                      color={user.status === 'Active' ? 'success' : 'default'}
-                      sx={{
-                        bgcolor: user.status === 'Active' ? '#E8F5E9' : '#F5F5F5',
-                        color: user.status === 'Active' ? '#2E7D32' : '#757575',
-                        borderRadius: 1,
-                      }}
-                    />
+                    <Chip label={user.status} size="small" color={statusColors[user.status]} />
                   </TableCell>
                   <TableCell>{user.assets}</TableCell>
                   <TableCell>{user.licenses}</TableCell>
@@ -136,6 +163,15 @@ export default function UserManagement() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          component="div"
+          count={filteredUsers.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
       </Paper>
 
       <Menu
@@ -149,15 +185,32 @@ export default function UserManagement() {
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
-        }}>
-        <MenuItem onClick={handleMenuClose}>View Details</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Edit User</MenuItem>
+        }}
+      >
+        <MenuItem onClick={() => { navigate(`/dashboard/users/${selectedUser?.id}`); handleMenuClose(); }}>View Details</MenuItem>
+        <MenuItem onClick={() => { setEditUser(selectedUser); setOpenUserModal(true); handleMenuClose(); }}>Edit User</MenuItem>
         <MenuItem onClick={handleMenuClose}>Manage Assets</MenuItem>
         <MenuItem onClick={handleMenuClose}>Manage Licenses</MenuItem>
-        <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={() => { setOpenConfirmModal(true); setConfirmTarget(selectedUser); handleMenuClose(); }} sx={{ color: 'error.main' }}>
           Deactivate User
         </MenuItem>
       </Menu>
+      <UserModal
+        open={openUserModal}
+        onClose={() => { setOpenUserModal(false); setEditUser(null); }}
+        onSubmit={handleAddUser}
+        onUpdate={handleUpdateUser}
+        item={editUser}
+      />
+      <ConfirmActionModal
+        open={openConfirmModal}
+        onClose={() => setOpenConfirmModal(false)}
+        onConfirm={handleDeactivateUser}
+        title="Confirm Deactivation"
+        description={confirmTarget ? `Are you sure you want to deactivate user '${confirmTarget.name}'?` : ''}
+        confirmLabel="Deactivate"
+        danger
+      />
     </Box>
   );
 }

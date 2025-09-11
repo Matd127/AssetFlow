@@ -5,15 +5,15 @@ import MainLayout from 'layouts/main-layout/MainLayout.jsx';
 import { Login, Register, Recovery } from 'features/auth';
 import AuthLayout from 'layouts/auth-layout/AuthLayout.jsx';
 import DashboardLayout from 'layouts/dashboard-layout/DashboardLayout.jsx';
-import { 
-  Overview, 
-  UserManagement, 
-  AssetManagement, 
-  LicenseManagement, 
-  SupportTickets 
-} from 'features/dashboard';
+import { Overview, UserManagement, AssetManagement, LicenseManagement, SupportTickets } from 'features/dashboard';
+import UserDetails from 'features/dashboard/UserDetails.jsx';
+import LicenseDetails from 'features/dashboard/LicenseDetails.jsx';
+import AssetDetails from 'features/dashboard/AssetDetails.jsx';
+import TicketDetails from 'features/dashboard/TicketDetails.jsx';
+import EditProfile from 'features/dashboard/EditProfile.jsx';
+import AccountSettings from 'features/dashboard/AccountSettings.jsx';
 
-// Mock authentication check - replace with real auth logic later
+// TODO: Replace with real auth logic later
 const isAuthenticated = true;
 
 function PrivateRoute({ children }) {
@@ -24,37 +24,37 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Public routes */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />
         </Route>
 
-        {/* Auth routes */}
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="recovery" element={<Recovery />} />
         </Route>
 
-        {/* Protected dashboard routes */}
         <Route
           path="/dashboard"
           element={
             <PrivateRoute>
               <DashboardLayout />
             </PrivateRoute>
-          }
-        >
+          }>
           <Route index element={<Overview />} />
           <Route path="users" element={<UserManagement />} />
+          <Route path="users/:id" element={<UserDetails />} />
           <Route path="assets" element={<AssetManagement />} />
+          <Route path="assets/:id" element={<AssetDetails />} />
           <Route path="licenses" element={<LicenseManagement />} />
+          <Route path="licenses/:id" element={<LicenseDetails />} />
           <Route path="tickets" element={<SupportTickets />} />
-          <Route path="settings" element={<div>Settings Page</div>} />
+          <Route path="tickets/:id" element={<TicketDetails />} />
+          <Route path="profile" element={<EditProfile />} />
+          <Route path="settings" element={<AccountSettings />} />
         </Route>
 
-        {/* Catch all route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
