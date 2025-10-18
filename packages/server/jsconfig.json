@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "config/*": ["config/*"],
+      "graphql/*": ["graphql/*"],
+      "middleware/*": ["middleware/*"],
+      "models/*": ["models/*"]
+    }
+  }
+}

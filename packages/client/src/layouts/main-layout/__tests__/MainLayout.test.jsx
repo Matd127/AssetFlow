@@ -1,4 +1,4 @@
-import { describe, it, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, vi, beforeEach, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import MainLayout from '../MainLayout';

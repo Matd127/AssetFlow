@@ -1,14 +1,7 @@
-const http = require('http');
+import app from "./app.js";
 
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
+const PORT = process.env.PORT || 4000;
 
-    res.end('Hello, World!');
-});
-
-const port = 3000;
-const hostname = '127.0.0.1';
-
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 });

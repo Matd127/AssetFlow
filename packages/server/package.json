@@ -5,12 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http": "^0.0.1-security"
+    "module-alias": "^2.2.3"
+  },
+  "type": "module",
+  "imports": {
+    "#config/*": "./src/config/*",
+    "#graphql/*": "./src/graphql/*",
+    "#middleware/*": "./src/middleware/*",
+    "#models/*": "./src/models/*"
   }
 }

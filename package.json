@@ -12,5 +12,18 @@
   "license": "ISC",
   "devDependencies": {
     "lerna": "^8.2.1"
+  },
+  "dependencies": {
+    "@graphql-tools/merge": "^9.1.1",
+    "@graphql-tools/schema": "^10.0.25",
+    "apollo-server-express": "^3.13.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "graphql": "^16.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.1",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
   }
 }
