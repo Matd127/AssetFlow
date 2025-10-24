@@ -14,9 +14,16 @@ export default gql`
     licenses: [License]
   }
 
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   extend type Query {
     users: [User]
     user(id: ID!): User
+    me: User
+    secretData: String
   }
 
   extend type Mutation {
@@ -39,5 +46,14 @@ export default gql`
     ): User
 
     deleteUser(id: ID!): User
+
+    register(
+      email: String!
+      password: String!
+      role: String
+      first_name: String
+      last_name: String
+    ): AuthPayload!
+    login(email: String!, password: String!): AuthPayload!
   }
 `;

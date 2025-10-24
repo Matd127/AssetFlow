@@ -5,8 +5,9 @@ import GoogleIcon from '@mui/icons-material/Google';
 import MicrosoftIcon from '@mui/icons-material/Microsoft';
 import { LOGIN_FIELDS, REMEMBER_ME_FIELD } from 'features/auth/constants.js';
 import { Link as RouterLink } from 'react-router-dom';
+import { withAuth } from './authConnect.js';
 
-export default function Login() {
+function Login({ error, loading, login }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -22,9 +23,18 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log('Login form submitted:', formData);
+    try {
+      await login({ email: formData.email, password: formData.password })
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+
+      if (error) console.log(error);
+      // np. przekierowanie po logowaniu
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const renderFormFields = fields =>
@@ -66,8 +76,8 @@ export default function Login() {
       <Box>
         <Button
           type="submit"
-          component={RouterLink}
-          to="/dashboard"
+          // component={RouterLink}
+          // to="/dashboard"
           fullWidth
           variant="contained"
           sx={{
@@ -133,3 +143,5 @@ export default function Login() {
     </Box>
   );
 }
+
+export default withAuth(Login);

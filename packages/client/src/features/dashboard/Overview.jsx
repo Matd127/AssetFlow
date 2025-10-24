@@ -5,7 +5,6 @@ import KeyIcon from '@mui/icons-material/Key';
 import PeopleIcon from '@mui/icons-material/People';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
-// Import dashboard components
 import KpiCard from './components/KpiCard';
 import RecentActivityTable from './components/RecentActivityTable';
 import AssetStatusDonut from './components/AssetStatusDonut';
@@ -14,7 +13,6 @@ import TicketsOverTimeLine from './components/TicketsOverTimeLine';
 import TopUsersWidget from './components/TopUsersWidget';
 import QuickActionsBar from './components/QuickActionsBar';
 
-// Import modals for quick actions
 import AssetModal from './components/AssetModal';
 import LicenseModal from './components/LicenseModal';
 import UserModal from './components/UserModal';

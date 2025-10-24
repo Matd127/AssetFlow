@@ -1,5 +1,6 @@
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import demo from 'assets/demo.png';
 
 export default function CtaImageSection() {
   return (
@@ -26,7 +27,7 @@ export default function CtaImageSection() {
       />
       <Box
         component="img"
-        src="/dashboard-preview.png"
+        src={demo}
         alt="AssetFlow Dashboard"
         sx={{
           maxWidth: '90%',
