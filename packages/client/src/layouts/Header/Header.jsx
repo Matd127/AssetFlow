@@ -6,10 +6,12 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { LINKS } from './constants.js';
 import { primaryButtonStyles } from 'shared/styles/buttonStyles.js';
-import MobileMenu from './MobileMenu.jsx';
 import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import AccountMenu from 'shared/components/AccountMenu/AccountMenu.jsx';
+import MobileMenu from 'layouts/mobile-menu/MobileMenu.jsx';
 
-export default function Header({ isMobile, location }) {
+export default function Header({ isMobile, location, user, loadingUser, navigate }) {
   const linkStyles = link => {
     const isActive = location.pathname === link.href;
     return {
@@ -32,6 +34,31 @@ export default function Header({ isMobile, location }) {
       </Button>
     ));
 
+  const renderButton = () => {
+    if (loadingUser) {
+      return <CircularProgress size={24} color="primary" />;
+    }
+    return user ? (
+      <AccountMenu navigate={navigate} user={user} />
+    ) : (
+      <Button component={Link} to="login" color="primary" variant="contained" sx={primaryButtonStyles}>
+        Sign in
+      </Button>
+    );
+  };
+
+  const renderMenu = () =>
+    isMobile ? (
+      <MobileMenu links={LINKS} user={user} renderButton={renderButton} navigate={navigate} />
+    ) : (
+      <>
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: '#EBEEF3', borderRadius: 10 }}>{renderLinks()}</Box>
+        </Box>
+        {renderButton(user)}
+      </>
+    );
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="secondary" sx={{ boxShadow: 'none' }}>
@@ -40,18 +67,7 @@ export default function Header({ isMobile, location }) {
             <Typography color="primary" variant="h5" component="div" sx={{ fontWeight: 'bold', cursor: 'pointer' }}>
               AssetFlow
             </Typography>
-            {isMobile ? (
-              <MobileMenu links={LINKS} primaryButtonStyles={primaryButtonStyles} />
-            ) : (
-              <>
-                <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-                  <Box sx={{ bgcolor: '#EBEEF3', borderRadius: 10 }}>{renderLinks()}</Box>
-                </Box>
-                <Button component={Link} to="auth/login" color="primary" variant="contained" sx={primaryButtonStyles}>
-                  Sign in
-                </Button>
-              </>
-            )}
+            {renderMenu()}
           </Toolbar>
         </Container>
       </AppBar>

@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { useState } from 'react';
-import FormInput from 'shared/components/FormInput.jsx';
+import FormInput from 'shared/components/FormInput/FormInput.jsx';
 import { CONTACT_INFO } from './constants.js';
 
 export default function Contact() {

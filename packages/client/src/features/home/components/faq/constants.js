@@ -1,4 +1,4 @@
-export const faqItems = [
+export const FAQ_ITEMS = [
   {
     id: 1,
     question: 'What is AssetFlow?',

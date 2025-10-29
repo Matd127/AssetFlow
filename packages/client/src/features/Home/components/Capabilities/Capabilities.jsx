@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { CAPABILITIES } from './constants.js';
 import { Grid } from '@mui/material';
-import CapabilityCard from './CapabilityCard.jsx';
+import CapabilityCard from '../capability-card/CapabilityCard.jsx';
 
 export default function Capabilities() {
   const renderCapabilities = () =>

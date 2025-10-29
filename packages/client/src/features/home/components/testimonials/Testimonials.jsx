@@ -2,11 +2,11 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { testimonials } from './constants';
-import TestimonialCard from 'features/home/components/testimonials/TestimonialCard.jsx';
+import { TESTIMONIALS } from './constants';
+import TestimonialCard from 'features/home/components/testimonial-card/TestimonialCard.jsx';
 
 export default function Testimonials() {
-  const renderTestimonials = () => testimonials.map(testimonial => <TestimonialCard key={testimonial.id} testimonial={testimonial} />);
+  const renderTestimonials = () => TESTIMONIALS.map(testimonial => <TestimonialCard key={testimonial.id} testimonial={testimonial} />);
 
   return (
     <Box sx={{ backgroundColor: 'white', py: 8 }}>

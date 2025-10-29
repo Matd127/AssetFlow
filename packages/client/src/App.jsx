@@ -2,47 +2,48 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from 'features/home/Home.jsx';
 import Contact from 'features/contact/Contact.jsx';
 import MainLayout from 'layouts/main-layout/MainLayout.jsx';
-import { Login, Register, Recovery } from 'features/auth';
+import Login from 'features/login/Login.jsx';
+import Register from 'features/register/Register.jsx';
+import Recovery from 'features/recovery/Recovery.jsx';
 import AuthLayout from 'layouts/auth-layout/AuthLayout.jsx';
 import DashboardLayout from 'layouts/dashboard-layout/DashboardLayout.jsx';
-import { Overview, UserManagement, AssetManagement, LicenseManagement, SupportTickets } from 'features/dashboard';
-import UserDetails from 'features/dashboard/UserDetails.jsx';
-import LicenseDetails from 'features/dashboard/LicenseDetails.jsx';
-import AssetDetails from 'features/dashboard/AssetDetails.jsx';
-import TicketDetails from 'features/dashboard/TicketDetails.jsx';
-import EditProfile from 'features/dashboard/EditProfile.jsx';
-import AccountSettings from 'features/dashboard/AccountSettings.jsx';
+import Overview from 'features/dashboard/Dashboard.jsx';
+import UserManagement from 'features/user-management/UserManagement.jsx';
+import AssetManagement from 'features/asset-management/AssetManagement.jsx';
+import LicenseManagement from 'features/license-management/LicenseManagement.jsx';
+import SupportTickets from 'features/support-tickets/SupportTickets.jsx';
+import UserDetails from 'features/user-details/UserDetails.jsx';
+import LicenseDetails from 'features/dashboard/license-details/LicenseDetails.jsx';
+import AssetDetails from 'features/asset-details/AssetDetails.jsx';
+import TicketDetails from 'features/ticket-details/TicketDetails.jsx';
+import EditProfile from 'features/edit-profile/EditProfile.jsx';
+import AccountSettings from 'features/account-settings/AccountSettings.jsx';
+import { withUser } from './appConnector.jsx';
 
-// TODO: Replace with real auth logic later
-const isAuthenticated = true;
-
-function PrivateRoute({ children }) {
-  return isAuthenticated ? children : <Navigate to="/auth/login" />;
+function PrivateRoute({ user, loadingUser, children }) {
+  return !loadingUser && !user ? <Navigate to="login" /> : children;
 }
 
-export default function App() {
+function App({ user, loading }) {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<MainLayout user={user} loadingUser={loading} />}>
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />
         </Route>
-
-        <Route path="/auth" element={<AuthLayout />}>
+        <Route element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="recovery" element={<Recovery />} />
         </Route>
-
         <Route
-          path="/dashboard"
           element={
-            <PrivateRoute>
-              <DashboardLayout />
+            <PrivateRoute user={user} loadingUser={loading}>
+              <DashboardLayout user={user} />
             </PrivateRoute>
           }>
-          <Route index element={<Overview />} />
+          <Route path="dashboard" element={<Overview />} />
           <Route path="users" element={<UserManagement />} />
           <Route path="users/:id" element={<UserDetails />} />
           <Route path="assets" element={<AssetManagement />} />
@@ -54,9 +55,10 @@ export default function App() {
           <Route path="profile" element={<EditProfile />} />
           <Route path="settings" element={<AccountSettings />} />
         </Route>
-
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
 }
+
+export default withUser(App);

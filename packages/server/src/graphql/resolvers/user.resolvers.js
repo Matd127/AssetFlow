@@ -14,8 +14,13 @@ export default {
       return await User.find();
     },
     user: (_, { id }, { user }) => {
+      console.log("resolver user:", user);
       if (!user || user.role !== "Admin") throw new Error("Not authorized");
       return User.findById(id);
+    },
+    me: (_, __, { user }) => {
+      console.log("resolver me user:", user); // powinien być obiekt usera
+      return user; // zwraca aktualnego zalogowanego użytkownika
     },
   },
 
@@ -64,7 +69,6 @@ export default {
       if (!valid) throw new Error("Incorrect password");
 
       const token = generateToken(user);
-      console.log(user.role);
       return { token, user };
     },
   },

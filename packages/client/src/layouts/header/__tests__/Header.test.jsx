@@ -1,10 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import Header from '../Header.jsx';
 import { MemoryRouter } from 'react-router-dom';
+import Header from '../Header.jsx';
 
 const baseProps = {
   location: { pathname: '/' },
+  loadingUser: false,
+  user: null,
+};
+
+const loggedInUserProps = {
+  id: 'id0',
+  firstName: 'John',
+  lastName: 'Doe',
 };
 
 describe('Header', () => {
@@ -24,5 +32,25 @@ describe('Header', () => {
       </MemoryRouter>,
     );
     expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  it('should render spinner when loading user', () => {
+    const props = { ...baseProps, loadingUser: true };
+    render(
+      <MemoryRouter>
+        <Header {...props} isMobile={false} />
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  });
+
+  it('should render account menu when user is logged in', () => {
+    const props = { ...baseProps, user: loggedInUserProps };
+    render(
+      <MemoryRouter>
+        <Header {...props} isMobile={false} />
+      </MemoryRouter>,
+    );
+    expect(screen.getByText('JD')).toBeInTheDocument();
   });
 });

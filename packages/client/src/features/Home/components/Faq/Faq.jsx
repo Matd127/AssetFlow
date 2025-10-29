@@ -1,11 +1,11 @@
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { faqItems } from './constants';
-import FaqItem from 'features/home/components/faq/FaqItem.jsx';
+import { FAQ_ITEMS } from './constants';
+import FaqItem from 'features/home/components/faq-item/FaqItem.jsx';
 
 export default function Faq() {
-  const renderFaqItems = () => faqItems.map(item => <FaqItem key={item.id} item={item} />);
+  const renderFaqItems = () => FAQ_ITEMS.map(item => <FaqItem key={item.id} item={item} />);
 
   return (
     <Box sx={{ backgroundColor: '#f8f9fa', py: 8 }}>

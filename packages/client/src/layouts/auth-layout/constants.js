@@ -1,5 +1,5 @@
 export const PATHS = {
-  LOGIN: '/auth/login',
-  REGISTER: '/auth/register',
-  RECOVERY: '/auth/recovery',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  RECOVERY: '/recovery',
 };

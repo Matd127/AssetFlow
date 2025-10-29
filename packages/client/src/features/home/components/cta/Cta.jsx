@@ -2,8 +2,8 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import CtaText from 'features/home/components/cta/CtaText.jsx';
-import CtaImage from 'features/home/components/cta/CtaImage.jsx';
+import CtaText from 'features/home/components/cta-text/CtaText.jsx';
+import CtaImage from 'features/home/components/cta-image/CtaImage.jsx';
 
 export default function Cta() {
   return (
