@@ -10,7 +10,7 @@ export const loginThunk = createAsyncThunk('auth/login', async ({ email, passwor
     mutation: loginMutation,
     variables: { email, password },
   });
-  return data?.login;
+  return normalizeKeys(data?.login);
 });
 
 export const registerThunk = createAsyncThunk('auth/register', async ({ email, password, role, first_name, last_name }) => {

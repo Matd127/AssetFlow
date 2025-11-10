@@ -3,16 +3,17 @@ import { Box, Button, Divider, Typography, Stack, Checkbox, Link, FormControlLab
 import FormInput from 'shared/components/FormInput/FormInput.jsx';
 import GoogleIcon from '@mui/icons-material/Google';
 import MicrosoftIcon from '@mui/icons-material/Microsoft';
-import { LOGIN_FIELDS, REMEMBER_ME_FIELD } from './constants.js';
+import { LOGIN_FIELDS, REMEMBER_ME_FIELD, REQUEST_STATUSES } from './constants.js';
 import { Link as RouterLink } from 'react-router-dom';
 import { loginConnector } from './loginConnector.js';
 
-function Login({ error, login }) {
+function Login({ error, login, openToast }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false,
   });
+
   const [errors, _] = useState({});
 
   const handleChange = e => {
@@ -27,11 +28,8 @@ function Login({ error, login }) {
     e.preventDefault();
     const { email, password } = formData;
     try {
-      await login({ email, password })
-        .then(data => console.log(data))
-        .catch(err => console.error(err));
-
-      if (error) console.log(error);
+      await login({ email, password }).then(data => data?.meta?.requestStatus === REQUEST_STATUSES.SUCCESS && openToast('Login successful!', 'success'));
+      if (error) openToast(error, 'error');
     } catch (err) {
       console.error(err);
     }

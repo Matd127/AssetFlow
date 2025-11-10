@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import AccountMenu from 'shared/components/AccountMenu/AccountMenu.jsx';
 import MobileMenu from 'layouts/mobile-menu/MobileMenu.jsx';
 
-export default function Header({ isMobile, location, user, loadingUser, navigate }) {
+export default function Header({ isMobile, location, user, loadingUser, navigate, logout }) {
   const linkStyles = link => {
     const isActive = location.pathname === link.href;
     return {
@@ -39,7 +39,7 @@ export default function Header({ isMobile, location, user, loadingUser, navigate
       return <CircularProgress size={24} color="primary" />;
     }
     return user ? (
-      <AccountMenu navigate={navigate} user={user} />
+      <AccountMenu navigate={navigate} user={user} logout={logout} openToast />
     ) : (
       <Button component={Link} to="login" color="primary" variant="contained" sx={primaryButtonStyles}>
         Sign in

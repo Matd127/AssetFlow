@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from 'features/home/Home.jsx';
 import Contact from 'features/contact/Contact.jsx';
@@ -18,29 +19,54 @@ import AssetDetails from 'features/asset-details/AssetDetails.jsx';
 import TicketDetails from 'features/ticket-details/TicketDetails.jsx';
 import EditProfile from 'features/edit-profile/EditProfile.jsx';
 import AccountSettings from 'features/account-settings/AccountSettings.jsx';
+import Toast from 'shared/components/Toast/Toast.jsx';
+import PageLoader from 'layouts/page-loader/PageLoader.jsx';
 import { withUser } from './appConnector.jsx';
 
-function PrivateRoute({ user, loadingUser, children }) {
-  return !loadingUser && !user ? <Navigate to="login" /> : children;
+function PrivateRoute({ children, isAuthenticated, loadingUser }) {
+  if (loadingUser) return <PageLoader />;
+  return isAuthenticated ? children : <Navigate to="login" />;
 }
 
-function App({ user, loading }) {
+function PublicRoute({ children, isAuthenticated, loadingUser }) {
+  if (loadingUser) return <PageLoader />;
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
+}
+
+function App({ user, loading, isAuthenticated, logout }) {
+  const [toast, setToast] = useState({ open: false, message: '', severity: 'success' });
+
+  const openToast = (message, severity = 'success', time = 0, duration = 3000) => {
+    setTimeout(() => {
+      setToast({ open: true, message, severity });
+      setTimeout(() => {
+        setToast({ open: false, message: '', severity: 'success' });
+      }, duration);
+    }, time);
+  };
+
   return (
     <Router>
+      {toast?.open && <Toast {...toast} />}
       <Routes>
-        <Route path="/" element={<MainLayout user={user} loadingUser={loading} />}>
+        <Route path="/" element={<MainLayout user={user} loadingUser={loading} logout={logout} />}>
           <Route index element={<Home />} />
           <Route path="contact" element={<Contact />} />
         </Route>
-        <Route element={<AuthLayout />}>
-          <Route path="login" element={<Login />} />
+        <Route
+          element={
+            <PublicRoute isAuthenticated={isAuthenticated} loadingUser={loading}>
+              <AuthLayout />
+            </PublicRoute>
+          }>
+          <Route path="login" element={<Login openToast={openToast} />} />
           <Route path="register" element={<Register />} />
           <Route path="recovery" element={<Recovery />} />
         </Route>
         <Route
           element={
-            <PrivateRoute user={user} loadingUser={loading}>
-              <DashboardLayout user={user} />
+            <PrivateRoute user={user} loadingUser={loading} isAuthenticated={isAuthenticated}>
+              <DashboardLayout user={user} logout={logout} openToast={openToast} />
             </PrivateRoute>
           }>
           <Route path="dashboard" element={<Overview />} />
@@ -61,4 +87,6 @@ function App({ user, loading }) {
   );
 }
 
-export default withUser(App);
+const AppWithUser = withUser(App);
+
+export default AppWithUser;

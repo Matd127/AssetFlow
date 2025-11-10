@@ -19,8 +19,8 @@ export default {
       return User.findById(id);
     },
     me: (_, __, { user }) => {
-      console.log("resolver me user:", user); // powinien być obiekt usera
-      return user; // zwraca aktualnego zalogowanego użytkownika
+      console.log("resolver me user:", user);
+      return user;
     },
   },
 

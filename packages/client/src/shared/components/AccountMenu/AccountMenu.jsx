@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Avatar, IconButton, Menu, MenuItem, Divider } from '@mui/material';
 import { getNameInitials } from 'shared/utils/getNameInitials.js';
 
-export default function AccountMenu({ navigate, user }) {
+export default function AccountMenu({ navigate, user, logout, openToast }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -12,6 +12,11 @@ export default function AccountMenu({ navigate, user }) {
   const handleClick = path => {
     handleClose();
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    logout();
+    openToast('Logged out successfully', 'success');
   };
 
   return (
@@ -35,7 +40,8 @@ export default function AccountMenu({ navigate, user }) {
         <MenuItem onClick={() => handleClick('profile')}>Edit Profile</MenuItem>
         <MenuItem onClick={() => handleClick('settings')}> Settings</MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>
+        {/*<MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>*/}
+        <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
           Logout
         </MenuItem>
       </Menu>

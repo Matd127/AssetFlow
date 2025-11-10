@@ -6,7 +6,7 @@ import { THEME_STYLES } from 'shared/constants.js';
 import Footer from 'layouts/footer/Footer.jsx';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-export default function MainLayout({ user, loadingUser }) {
+export default function MainLayout({ user, loadingUser, logout }) {
   const location = useLocation();
   const theme = createTheme(THEME_STYLES);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -15,7 +15,7 @@ export default function MainLayout({ user, loadingUser }) {
   return (
     <Box sx={{ minHeight: '100vh' }}>
       <ThemeProvider theme={theme}>
-        <Header isMobile={isMobile} location={location} user={user} loadingUser={loadingUser} navigate={navigate} />
+        <Header isMobile={isMobile} location={location} user={user} loadingUser={loadingUser} navigate={navigate} logout={logout} />
         <Outlet />
         <Footer />
       </ThemeProvider>

@@ -13,6 +13,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: state => {
+      console.log('Logging out');
       state.user = null;
       state.token = null;
       localStorage.removeItem('token');
@@ -26,9 +27,9 @@ const authSlice = createSlice({
       })
       .addCase(loginThunk.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.user = payload.user;
         state.token = payload.token;
         localStorage.setItem('token', payload.token);
+        state.user = payload.user;
       })
       .addCase(loginThunk.rejected, (state, { error }) => {
         state.loading = false;

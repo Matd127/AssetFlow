@@ -22,3 +22,8 @@ export const REMEMBER_ME_FIELD = {
   id: 'rememberMe',
   name: 'rememberMe',
 };
+
+export const REQUEST_STATUSES = {
+  SUCCESS: 'fulfilled',
+  ERROR: 'rejected',
+};

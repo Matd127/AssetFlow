@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { THEME_STYLES } from 'shared/constants.js';
 import DashboardHeader from 'layouts/dashboard-header/DashboardHeader.jsx';
 
-export default function DashboardLayout({ user }) {
+export default function DashboardLayout({ user, logout, openToast }) {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = createTheme(THEME_STYLES);
@@ -14,7 +14,7 @@ export default function DashboardLayout({ user }) {
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F8FAFC' }}>
         <Sidebar navigate={navigate} location={location} />
-        <DashboardHeader navigate={navigate} user={user} />
+        <DashboardHeader navigate={navigate} user={user} logout={logout} openToast={openToast} />
         <Box component="main" sx={{ flexGrow: 1, ml: '240px', pt: 11 }}>
           <Outlet />
         </Box>

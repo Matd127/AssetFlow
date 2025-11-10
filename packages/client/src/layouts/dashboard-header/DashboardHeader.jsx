@@ -11,7 +11,7 @@ const notifications = [
   { id: 3, text: 'License for "Photoshop" is expiring soon', icon: <KeyIcon fontSize="small" color="error" />, time: '1 hr ago' },
 ];
 
-export default function DashboardHeader({ navigate, user }) {
+export default function DashboardHeader({ navigate, user, logout, openToast }) {
   return (
     <AppBar
       position="fixed"
@@ -26,7 +26,7 @@ export default function DashboardHeader({ navigate, user }) {
       }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
         <NotificationsMenu notifications={notifications} />
-        <AccountMenu navigate={navigate} user={user} />
+        <AccountMenu navigate={navigate} user={user} logout={logout} openToast={openToast} />
       </Toolbar>
     </AppBar>
   );
